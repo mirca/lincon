@@ -14,12 +14,18 @@ class qpsolver {
     c_vector_t& qvec; // qp vector
     c_vector_t& cvec; // equality constraint vector
     c_vector_t& dvec; // inequality constraint vector
-    c_vector_t& w0; // starting value
-    unsigned int maxiter = 500;
-    double tol = .5e-5
+    c_vector_t& w0;   // starting value
+    unsigned int maxiter;
+    double tol;
+
+  public:
+    qpsolver(c_matrix_t& Qmat, c_vector_t& qvec, c_matrix_t& Cmat,
+             c_vector_t& cvec, c_matrix_t& Dmat, c_vector_t& dvec,
+             c_vector_t& w0, unsigned int maxiter, double tol) {
+    }
 }
 
-Eigen::VectorXd qpsolver::solve(void) {
+vector_t qpsolver::solve(void) {
   unsigned int n = this->Cmat.cols();
   vector_t w_best(n), w_prev(n), w_k(n);
   vector_t chi_next(n), xi_next(n);
@@ -27,18 +33,18 @@ Eigen::VectorXd qpsolver::solve(void) {
   vector_t chi_prev(n) = vector_t::Zero(n);
   vector_t xi(n) = vector_t::Zero(n);
   vector_t xi_prev(n) = vector_t::Zero(n);
-  LLT<MatrixXd> lltOfQ(this->Q);
+  LLT<MatrixXd> lltOfQ(this->Qmat);
   matrix_t B(this->Cmat.rows() + this->Dmat.rows(), this->Cmat.cols());
-  B << Cmat, Dmat;
+  B << this->Cmat, this->Dmat;
   double LC = (B * lltOfQ.solve(B.transpose())).norm(), fac;
   w_prev = this->w0;
   unsigned int i = 1;
   while (true) {
     fac = (i - 1.)/(i + 2.);
-    w_best = -lltOfQ.solve(q + Cmat.transpose() * xi + Dmat.transpose() * chi);
+    w_best = -lltOfQ.solve(this->qvec + this->Cmat.transpose() * xi + this->Dmat.transpose() * chi);
     w_k = w_best +  fac * (w_best - w_prev);
-    xi_next = xi + fac * (xi - xi_prev) + (Cmat * w_k - cvec) / LC;
-    chi_next = (chi + fac * (chi - chi_prev) + (Dmat * w_k - dvec) / LC).array().max(0);
+    xi_next = xi + fac * (xi - xi_prev) + (this->Cmat * w_k - this->cvec) / LC;
+    chi_next = (chi + fac * (chi - chi_prev) + (this->Dmat * w_k - this->dvec) / LC).array().max(0);
     chi_prev = chi;
     xi_prev = xi;
     chi = chi_next;
