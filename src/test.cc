@@ -15,6 +15,7 @@ int main() {
   Dmat << -1.,0.,  0.,-1.;
   cvec << 1.,0.;
   dvec << 0.,0.;
-  qpsolver* my_solver = new qpsolver(Qmat, qvec, Cmat, cvec, Dmat, dvec, w0, 100, .5e-7);
+  qpsolver* my_solver = new qpsolver(Qmat, qvec, Cmat, cvec, Dmat, dvec, w0,
+                                     100, .5e-7);
   std::cout << my_solver->solve() << std::endl;
 }
