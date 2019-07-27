@@ -39,7 +39,7 @@ vector_t qpsolver::solve(void) const {
   vector_t chi_prev = vector_t::Zero(n);
   vector_t xi = vector_t::Zero(n);
   vector_t xi_prev = vector_t::Zero(n);
-  LLT<MatrixXd> lltOfQ(Qmat);
+  LLT<matrix_t> lltOfQ(Qmat);
   matrix_t B(Cmat.rows() + Dmat.rows(), Cmat.cols());
   B << Cmat, Dmat;
   double LC = (B * lltOfQ.solve(B.transpose())).norm(), fac;
@@ -54,7 +54,8 @@ vector_t qpsolver::solve(void) const {
     xi_prev = xi;
     chi = chi_next;
     xi = xi_next;
-    if(((w_best - w_prev).array().abs() <= tol * (w_best.array().abs() + w_prev.array().abs())).all())
+    if(((w_best - w_prev).array().abs() <= tol *
+        (w_best.array().abs() + w_prev.array().abs())).all())
       break;
     w_prev = w_best;
   }
