@@ -33,12 +33,14 @@ class qpsolver {
 
 vector_t qpsolver::solve(void) const {
   unsigned int n = Cmat.cols();
+  unsigned int xi_len = Cmat.rows();
+  unsigned int chi_len = Dmat.rows();
   vector_t w_best(n), w_prev(n), w_k(n);
-  vector_t chi_next(n), xi_next(n);
-  vector_t chi = vector_t::Zero(n);
-  vector_t chi_prev = vector_t::Zero(n);
-  vector_t xi = vector_t::Zero(n);
-  vector_t xi_prev = vector_t::Zero(n);
+  vector_t chi_next(chi_len), xi_next(xi_len);
+  vector_t chi = vector_t::Zero(chi_len);
+  vector_t chi_prev = vector_t::Zero(chi_len);
+  vector_t xi = vector_t::Zero(xi_len);
+  vector_t xi_prev = vector_t::Zero(xi_len);
   LLT<matrix_t> lltOfQ(Qmat);
   matrix_t B(Cmat.rows() + Dmat.rows(), Cmat.cols());
   B << Cmat, Dmat;
