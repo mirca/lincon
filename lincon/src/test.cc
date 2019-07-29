@@ -1,4 +1,4 @@
-#include "solver.hh"
+#include "solver.h"
 #include <iostream>
 
 using namespace Eigen;

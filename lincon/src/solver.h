@@ -3,6 +3,7 @@
 
 #include <Eigen/Dense>
 using namespace Eigen;
+using namespace std;
 
 typedef const Eigen::Matrix<double, Eigen::Dynamic, 1> c_vector_t;
 typedef const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> c_matrix_t;
@@ -29,6 +30,17 @@ class qpsolver {
              Qmat(Qmat), qvec(qvec), Cmat(Cmat), cvec(cvec), Dmat(Dmat),
              dvec(dvec), w0(w0), maxiter(maxiter), tol(tol) {}
     vector_t solve(void) const;
+    c_matrix_t& get_Qmat(void) const { return Qmat;}
+    c_vector_t& get_qvec(void) const { return qvec;}
+    c_matrix_t& get_Cmat(void) const { return Cmat;}
+    c_vector_t& get_cvec(void) const { return cvec;}
+    c_matrix_t& get_Dmat(void) const { return Dmat;}
+    c_vector_t& get_dvec(void) const { return dvec;}
+    c_vector_t& get_w0(void) const { return w0;}
+    unsigned int get_maxiter(void) const { return maxiter; }
+    double get_tol(void) const { return tol; }
+    void set_maxiter(unsigned int value) { maxiter = value; }
+    void set_tol(double value) { tol = value; }
 };
 
 vector_t qpsolver::solve(void) const {

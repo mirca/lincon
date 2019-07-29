@@ -31,8 +31,8 @@ class get_pybind_include(object):
 
 ext_modules = [
     Extension(
-        'lincon.solver',
-        ['lincon/solver.hh'],
+        'lincon.qp',
+        ['lincon/src/qp.cpp'],
         include_dirs=[
             # Path to pybind11 headers
             get_pybind_include(),

@@ -1,0 +1,5 @@
+.DS_Store
+var/
+build/
+lincon.egg-info/
+*.so
