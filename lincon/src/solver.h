@@ -58,7 +58,7 @@ vector_t qpsolver::solve(void) const {
   B << Cmat, Dmat;
   double LC = (B * lltOfQ.solve(B.transpose())).norm(), fac;
   w_prev = w0;
-  for (unsigned int i = 1; i < maxiter; ++i) {
+  for (unsigned int i = 0; i < maxiter; ++i) {
     fac = (i - 1.)/(i + 2.);
     w_best = -lltOfQ.solve(qvec + Cmat.transpose() * xi + Dmat.transpose() * chi);
     w_k = w_best + fac * (w_best - w_prev);
