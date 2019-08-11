@@ -10,6 +10,19 @@ typedef const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> c_matrix_t;
 typedef Eigen::Matrix<double, Eigen::Dynamic, 1> vector_t;
 typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> matrix_t;
 
+// save the state of the dual variables
+class dual_state {
+  private:
+    c_vector_t& dual_mu;
+    c_vector_t& dual_lambda;
+
+  public:
+    dual_state(c_vector_t& dual_mu, c_vector_t& dual_lambda):
+              dual_mu(dual_mu), dual_lambda(dual_lambda){}
+    c_vector_t& get_dual_mu(void) const {return dual_mu;}
+    c_vector_t& get_dual_lambda(void) const {return dual_lambda;}
+};
+
 
 class qpsolver {
   private:
@@ -22,14 +35,19 @@ class qpsolver {
     c_vector_t& w0;   // starting value
     unsigned int maxiter;
     double tol;
+    unsigned int niter; // number of iterations taken
+    bool convergence;     // did it converged?
+    void set_niter(unsigned int value) { niter = value; }
+    void set_convergence(bool value) { convergece = value; }
 
   public:
     qpsolver(c_matrix_t& Qmat, c_vector_t& qvec, c_matrix_t& Cmat,
              c_vector_t& cvec, c_matrix_t& Dmat, c_vector_t& dvec,
              c_vector_t& w0, unsigned int maxiter = 500, double tol = .5e-5):
-             Qmat(Qmat), qvec(qvec), Cmat(Cmat), cvec(cvec), Dmat(Dmat),
-             dvec(dvec), w0(w0), maxiter(maxiter), tol(tol) {}
-    vector_t solve(void) const;
+            Qmat(Qmat), qvec(qvec), Cmat(Cmat), cvec(cvec), Dmat(Dmat),
+            dvec(dvec), w0(w0), maxiter(maxiter), tol(tol), niter(0),
+            convergence(false) {}
+    vector_t solve(void);
     c_matrix_t& get_Qmat(void) const { return Qmat;}
     c_vector_t& get_qvec(void) const { return qvec;}
     c_matrix_t& get_Cmat(void) const { return Cmat;}
@@ -39,6 +57,8 @@ class qpsolver {
     c_vector_t& get_w0(void) const { return w0;}
     unsigned int get_maxiter(void) const { return maxiter; }
     double get_tol(void) const { return tol; }
+    unsigned int get_niter(void) const { return niter; }
+    bool get_convergence(void) const { return convergence; }
     void set_maxiter(unsigned int value) { maxiter = value; }
     void set_tol(double value) { tol = value; }
 };
@@ -69,8 +89,11 @@ vector_t qpsolver::solve(void) const {
     chi = chi_next;
     xi = xi_next;
     if(((w_best - w_prev).array().abs() <= tol *
-        (w_best.array().abs() + w_prev.array().abs())).all())
+        (w_best.array().abs() + w_prev.array().abs())).all()) {
+      set_convergence(true);
+      set_niter(i);
       break;
+    }
     w_prev = w_best;
   }
   return w_best;
