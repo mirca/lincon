@@ -13,13 +13,18 @@ typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> matrix_t;
 // save the state of the dual variables
 class dual_state {
   private:
+    c_vector_t& dual_mu_prev;
     c_vector_t& dual_mu;
+    c_vector_t& dual_lambda_prev;
     c_vector_t& dual_lambda;
 
   public:
-    dual_state(c_vector_t& dual_mu, c_vector_t& dual_lambda):
+    dual_state(c_vector_t& dual_mu_prev, c_vector_t& dual_mu,
+               c_vector_t& dual_lambda_prev, c_vector_t& dual_lambda):
               dual_mu(dual_mu), dual_lambda(dual_lambda){}
+    c_vector_t& get_dual_mu_prev(void) const {return dual_mu_prev;}
     c_vector_t& get_dual_mu(void) const {return dual_mu;}
+    c_vector_t& get_dual_lambda_prev(void) const {return dual_lambda_prev;}
     c_vector_t& get_dual_lambda(void) const {return dual_lambda;}
 };
 
