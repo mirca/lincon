@@ -17,4 +17,4 @@ bvec = np.concatenate((cvec, dvec))
 def test_simple_qp():
     x = qp.solve(Qmat=Qmat, qvec=qvec, Cmat=Cmat, cvec=cvec, Dmat=Dmat,
                  dvec=dvec, w0=w0, maxiter=500, tol=.1e-7)
-    np.assert_almost_equal(x[0], [0.25, 0.75])
+    np.testing.assert_almost_equal(x[0], [0.25, 0.75])

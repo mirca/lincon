@@ -3,3 +3,5 @@ var/
 build/
 lincon.egg-info/
 *.so
+__pycache__/
+.coverage
