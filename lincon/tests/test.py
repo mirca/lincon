@@ -1,4 +1,4 @@
-import quadprog
+#import quadprog
 import numpy as np
 from lincon import qp
 
@@ -12,15 +12,9 @@ dvec = np.zeros(2, dtype=np.float64)
 
 Amat = np.vstack((Cmat, -Dmat)).T
 bvec = np.concatenate((cvec, dvec))
-print(quadprog.solve_qp(Qmat, -qvec, Amat, bvec, meq = 1)[0])
+#print(quadprog.solve_qp(Qmat, -qvec, Amat, bvec, meq = 1)[0])
 
-x = qp.solve(Qmat=Qmat,
-             qvec=qvec,
-             Cmat=Cmat,
-             cvec=cvec,
-             Dmat=Dmat,
-             dvec=dvec,
-             w0=w0,
-             maxiter=500,
-             tol=.1e-7)
-print(x)
+def test_simple_qp():
+    x = qp.solve(Qmat=Qmat, qvec=qvec, Cmat=Cmat, cvec=cvec, Dmat=Dmat,
+                 dvec=dvec, w0=w0, maxiter=500, tol=.1e-7)
+    np.assert_almost_equal(x[0], [0.25, 0.75])
