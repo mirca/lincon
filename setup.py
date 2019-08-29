@@ -118,8 +118,8 @@ setup(
     description='a QP solver with support for general linear equality and inequality constraints',
     long_description='',
     ext_modules=ext_modules,
-    install_requires=['pybind11>=2.2'],
-    setup_requires=['pybind11>=2.2'],
+    install_requires=['pybind11>=2.2, numpy'],
+    setup_requires=['pybind11>=2.2, numpy'],
     cmdclass={'build_ext': BuildExt},
     classifiers=[
     'Development Status :: 3 - Alpha',
