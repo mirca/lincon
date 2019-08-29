@@ -4,7 +4,7 @@ import sys
 import setuptools
 import os
 
-__version__ = '0.0.1dev'
+__version__ = '0.0.2dev'
 
 # Prepare and send a new release to PyPI
 if "release" in sys.argv[-1]:
@@ -118,8 +118,8 @@ setup(
     description='a QP solver with support for general linear equality and inequality constraints',
     long_description='',
     ext_modules=ext_modules,
-    install_requires=['pybind11>=2.2, numpy'],
-    setup_requires=['pybind11>=2.2, numpy'],
+    install_requires=['pybind11>=2.2', 'numpy'],
+    setup_requires=['pybind11>=2.2', 'numpy'],
     cmdclass={'build_ext': BuildExt},
     classifiers=[
     'Development Status :: 3 - Alpha',
