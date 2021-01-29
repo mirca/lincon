@@ -1,2 +1,2 @@
 include LICENSE README.md
-graft third-party
+graft third-party src

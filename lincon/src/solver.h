@@ -43,7 +43,7 @@ class qpsolver {
     unsigned int niter; // number of iterations taken
     bool convergence;     // did it converged?
     void set_niter(unsigned int value) { niter = value; }
-    void set_convergence(bool value) { convergece = value; }
+    void set_convergence(bool value) { convergence = value; }
 
   public:
     qpsolver(c_matrix_t& Qmat, c_vector_t& qvec, c_matrix_t& Cmat,
