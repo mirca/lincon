@@ -19,9 +19,12 @@ class dual_state {
     c_vector_t& dual_lambda;
 
   public:
-    dual_state(c_vector_t& dual_mu_prev, c_vector_t& dual_mu,
-               c_vector_t& dual_lambda_prev, c_vector_t& dual_lambda):
-              dual_mu(dual_mu), dual_lambda(dual_lambda){}
+    dual_state(c_vector_t& dual_mu_prev,
+               c_vector_t& dual_mu,
+               c_vector_t& dual_lambda_prev,
+               c_vector_t& dual_lambda):
+       dual_mu(dual_mu),
+       dual_lambda(dual_lambda){}
     c_vector_t& get_dual_mu_prev(void) const {return dual_mu_prev;}
     c_vector_t& get_dual_mu(void) const {return dual_mu;}
     c_vector_t& get_dual_lambda_prev(void) const {return dual_lambda_prev;}
@@ -49,16 +52,16 @@ class qpsolver {
     qpsolver(c_matrix_t& Qmat, c_vector_t& qvec, c_matrix_t& Cmat,
              c_vector_t& cvec, c_matrix_t& Dmat, c_vector_t& dvec,
              c_vector_t& w0, unsigned int maxiter = 500, double tol = .5e-5):
-            Qmat(Qmat), qvec(qvec), Cmat(Cmat), cvec(cvec), Dmat(Dmat),
-            dvec(dvec), w0(w0), maxiter(maxiter), tol(tol), niter(0),
-            convergence(false) {}
+       Qmat(Qmat), qvec(qvec), Cmat(Cmat), cvec(cvec), Dmat(Dmat),
+       dvec(dvec), w0(w0), maxiter(maxiter), tol(tol), niter(0),
+       convergence(false) {}
     vector_t solve(void);
-    c_matrix_t& get_Qmat(void) const { return Qmat;}
-    c_vector_t& get_qvec(void) const { return qvec;}
-    c_matrix_t& get_Cmat(void) const { return Cmat;}
-    c_vector_t& get_cvec(void) const { return cvec;}
-    c_matrix_t& get_Dmat(void) const { return Dmat;}
-    c_vector_t& get_dvec(void) const { return dvec;}
+    c_matrix_t& get_Qmat(void) const { return Qmat; }
+    c_vector_t& get_qvec(void) const { return qvec; }
+    c_matrix_t& get_Cmat(void) const { return Cmat; }
+    c_vector_t& get_cvec(void) const { return cvec; }
+    c_matrix_t& get_Dmat(void) const { return Dmat; }
+    c_vector_t& get_dvec(void) const { return dvec; }
     c_vector_t& get_w0(void) const { return w0;}
     unsigned int get_maxiter(void) const { return maxiter; }
     double get_tol(void) const { return tol; }
@@ -81,7 +84,8 @@ vector_t qpsolver::solve(void) const {
   LLT<matrix_t> lltOfQ(Qmat);
   matrix_t B(Cmat.rows() + Dmat.rows(), Cmat.cols());
   B << Cmat, Dmat;
-  double LC = (B * lltOfQ.solve(B.transpose())).norm(), fac;
+  double LC = (B * lltOfQ.solve(B.transpose())).norm();
+  double fac;
   w_prev = w0;
   for (unsigned int i = 0; i < maxiter; ++i) {
     fac = (i - 1.)/(i + 2.);
